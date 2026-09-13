@@ -1,0 +1,34 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "25 7 * * 4" # haftalık, Perşembe
+
+jobs:
+  analyze:
+    name: Analyze (javascript-typescript)
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    steps:
+      - name: Kodu çek
+        uses: actions/checkout@v4
+
+      - name: CodeQL başlat
+        uses: github/codeql-action/init@v4
+        with:
+          languages: javascript-typescript
+          build-mode: none
+
+      - name: CodeQL analizini çalıştır
+        uses: github/codeql-action/analyze@v4
+        with:
+          category: "/language:javascript-typescript"
