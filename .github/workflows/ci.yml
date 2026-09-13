@@ -21,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Tip kontrolü
-        run: npx tsc --noEmit
+        run: npx next typegen && npx tsc --noEmit
 
       - name: Build kontrolü
         run: npm run build
