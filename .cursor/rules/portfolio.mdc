@@ -1,0 +1,578 @@
+ --- description: Nihan'ın portfolyo sitesi için teknoloji, tasarım sistemi ve içerik kuralları 
+---
+alwaysApply: true
+---
+Nihan Arman — Portfolyo Sitesi Şartnamesi
+Bu dosya bir yapay zekâ kodlama asistanına (Cursor, Copilot, Claude Code) verilmek üzere yazılmıştır. Kararlar alınmıştır; asistanın görevi bu kararları uygulamak, yeniden tartışmak değil.
+---
+0. Bu dosya nasıl kullanılır
+Dosyayı proje kökünde `AGENTS.md` (veya `.cursor/rules/portfolio.mdc`) olarak kaydet. Asistan her istekte bunu okusun.
+Tek seferde "siteyi yap" deme. Bölüm 15'teki sıraya göre adım adım ilerle. Her adımda ilgili bölüm numarasını referans ver: "Bölüm 4.1'deki token setini `globals.css`'e uygula."
+Asistan bir karar sorarsa, cevap bu dosyada aranır. Dosyada yoksa sen karar verirsin ve dosyaya eklersin.
+---
+1. Proje özeti
+Site sahibi: Nihan Arman, Bilgisayar Mühendisliği 2. sınıf öğrencisi, Konya.
+Hedef kitle, önem sırasıyla:
+Staj ve yeni mezun pozisyonu değerlendiren İK uzmanı (teknik değil, 60 saniye bakar)
+Aynı başvuruyu inceleyen teknik ekip lideri (koda ve karar gerekçelerine bakar)
+Topluluk ve etkinlik bağlantıları
+Sitenin kanıtlaması gereken tek şey: Frontend'de üretmeye başlamış, backend ve buluta doğru bilinçli olarak genişleyen, öğrendiğini anlamadan kabul etmeyen bir mühendislik öğrencisi.
+Ayırt edici konum: Bu bir 2. sınıf öğrencisinin sitesi. Değerlendirici "ne kadar biliyor" diye sormaz, "ne kadar hızlı ilerliyor" diye sorar. Site deneyim değil ivme göstermeli. Tasarım ve içerik bu amaca hizmet eder.
+Gerçek içerik envanteri (uydurma içerik üretme, bunları kullan):
+Öğe	Tür	Durum
+Wikkon — sosyal medya platformu (Next.js + ASP.NET Core Web API)	Proje	Geliştiriliyor, Faz 1
+Agri-Water — Google Cloud Run üzerinde yayında	Proje	Yayında
+Bankacılık arayüzü web uygulaması	Proje	Tamamlandı
+HSD Selçuk Başkan Yardımcılığı	Rol / vaka	Devam ediyor
+GDG Cloud Konya katılımı	Etkinlik	Geçmiş
+CyberOps Associate — Cisco NetAcad & Akbank Gençlik Akademisi	Sertifika	Alındı
+Teknik yığın: Python, C, C# (Basic), Node.js, Next.js, .NET 8, Git	Beceri	—
+Güvenlik yarışmaları katılımı	Deneyim	Geçmiş
+Dil: Arayüz ve içerik varsayılan Türkçe, tam İngilizce çeviri zorunlu. Kod, değişken adları, commit mesajları, dosya adları İngilizce.
+---
+2. Teknoloji yığını
+Aşağıdaki liste kesindir. Alternatif önerme, ekleme yapma.
+Çekirdek
+Next.js 15+, App Router, TypeScript strict mode
+React 19
+Tailwind CSS v4 (CSS-first yapılandırma, `@theme` bloğu; `tailwind.config.js` kullanma)
+shadcn/ui (Tailwind v4 uyumlu sürüm, `npx shadcn@latest`)
+lucide-react — tek ikon kaynağı, başka ikon kütüphanesi ekleme
+İçerik
+MDX, `next-mdx-remote/rsc` ile Server Component içinde render
+gray-matter — frontmatter ayrıştırma
+zod — frontmatter şema doğrulaması, geçersiz içerik build'i kırsın
+reading-time — okuma süresi
+remark-gfm, rehype-slug, rehype-autolink-headings, rehype-pretty-code (Shiki)
+Altyapı
+next-themes — koyu/açık/sistem tema
+next-intl — TR/EN, yerelleştirilmiş rotalar
+next/og (`ImageResponse`) — dinamik paylaşım görselleri
+@vercel/analytics ve @vercel/speed-insights
+Playwright — sadece CV'yi PDF'e basmak için, geliştirme bağımlılığı
+Kalite
+ESLint (next/core-web-vitals + typescript)
+Prettier + `prettier-plugin-tailwindcss`
+`tsc --noEmit` ve `next build` CI kapısı
+Yayın
+Vercel, kendi alan adı (`nihanarman.dev` veya `.com`)
+Kullanılmayacaklar
+Framer Motion, GSAP, Three.js, particle arka planlar, AOS, Swiper, react-icons, styled-components, herhangi bir UI kit (shadcn dışında), Redux/Zustand (durum yok), veritabanı, CMS.
+Gerekçe: içerik derleme zamanında bilinir, ziyaretçiye göre değişen veri yoktur. Her şey statik render edilir, istemci JavaScript'i yalnızca tema anahtarı, mobil menü, dil değiştirici, filtre ve akordeon için vardır.
+---
+3. Klasör yapısı
+```
+src/
+  app/
+    [locale]/
+      layout.tsx
+      page.tsx                      # ana sayfa
+      hakkimda/page.tsx
+      projeler/
+        page.tsx                    # liste + filtre
+        [slug]/
+          page.tsx                  # vaka çalışması
+          opengraph-image.tsx
+      ozgecmis/
+        page.tsx                    # HTML CV
+        yazdir/page.tsx             # yazdırmaya özel, chrome yok
+      notlar/
+        page.tsx
+        [slug]/page.tsx
+      iletisim/page.tsx
+    opengraph-image.tsx
+    sitemap.ts
+    robots.ts
+    globals.css
+  components/
+    ui/                             # shadcn — elle düzenleme
+    layout/                         # SiteHeader, SiteFooter, ThemeToggle, LocaleSwitcher, SkipLink
+    home/                           # Hero, TrajectoryLine, SelectedWork, CurrentBuild
+    project/                        # ProjectCard, ProjectMeta, ProjectFilter, StackList
+    cv/                             # CvHeader, CvSection, CvEntry, CvSkills
+    mdx/                            # MDXComponents, Callout, Figure, CodeBlock
+  content/
+    projects/tr/*.mdx
+    projects/en/*.mdx
+    notes/tr/*.mdx
+    notes/en/*.mdx
+  data/
+    cv.ts                           # TEK KAYNAK
+    site.ts                         # site meta, sosyal linkler
+    trajectory.ts                   # kilometre taşları
+  lib/
+    content.ts                      # okuma + zod doğrulama
+    schemas.ts
+    utils.ts
+    metadata.ts
+  i18n/
+    messages/{tr,en}.json
+    routing.ts
+    request.ts
+scripts/
+  build-cv-pdf.ts
+public/
+  static/                           # proje kapakları
+  nihan-arman-cv.pdf                # üretilir, elle koyulmaz
+```
+---
+4. Tasarım sistemi
+Bu bölüm bağlayıcıdır. Bileşen yazarken hiçbir yerde ham hex, ham `px` font boyutu veya rastgele Tailwind arbitrary değeri (`text-[17px]`, `bg-[#0FB3A2]`) kullanılmaz. Sadece aşağıdaki token'lar kullanılır.
+4.1 Renk
+Tasarım kararı: Turkuaz tek aksan rengidir. Nötrler saf gri değil, çok düşük doygunlukta turkuaz eğilimlidir (hue ~190°, chroma 0.004–0.03). Bu, sayfanın renklendirilmiş gibi görünmeden bütün hissetmesini sağlar. Turkuazın iki tuzağı vardır ve ikisi de tokenlarla çözülmüştür: açık zeminde parlak turkuaz metin okunmaz (bu yüzden açık temada aksan koyulaştırılmıştır), koyu zeminde tam doygun turkuaz titrer (bu yüzden koyu temada chroma sınırlanmıştır).
+Aksan disiplini kuralı: Turkuaz herhangi bir ekranın görsel alanının %8'ini geçmez. Gövde metni asla turkuaz olmaz. Turkuaz sadece şunlarda kullanılır: birincil buton dolgusu, bağlantı metni, odak halkası, aktif navigasyon göstergesi, ilerleme çizgisi işaretleri, "yayında" durum noktası. Bunun dışında her yer nötrdür.
+`src/app/globals.css` içeriği:
+```css
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius-base: 0.625rem;
+
+  /* Marka ölçeği — doğrudan kullanılmaz, token'lar bunlardan türer */
+  --aqua-50:  oklch(0.980 0.022 185);  /* #ECFDFA */
+  --aqua-100: oklch(0.952 0.045 183);  /* #CFFAF1 */
+  --aqua-200: oklch(0.902 0.080 181);  /* #9DF3E4 */
+  --aqua-300: oklch(0.822 0.112 179);  /* #5FE6D2 */
+  --aqua-400: oklch(0.730 0.122 182);  /* #22CFBB */
+  --aqua-500: oklch(0.640 0.108 186);  /* #0FB3A2 */
+  --aqua-600: oklch(0.560 0.093 188);  /* #0A9086 */
+  --aqua-700: oklch(0.480 0.078 190);  /* #0C736C */
+  --aqua-800: oklch(0.405 0.062 191);  /* #0F5B57 */
+  --aqua-900: oklch(0.345 0.050 192);  /* #114B48 */
+  --aqua-950: oklch(0.225 0.038 191);  /* #032C2B */
+
+  /* AÇIK TEMA */
+  --background:            oklch(0.988 0.004 195);
+  --foreground:            oklch(0.205 0.021 196);
+  --card:                  oklch(1 0 0);
+  --card-foreground:       oklch(0.205 0.021 196);
+  --popover:               oklch(1 0 0);
+  --popover-foreground:    oklch(0.205 0.021 196);
+  --primary:               var(--aqua-700);
+  --primary-foreground:    oklch(0.992 0.006 190);
+  --secondary:             oklch(0.958 0.012 190);
+  --secondary-foreground:  var(--aqua-800);
+  --muted:                 oklch(0.966 0.008 192);
+  --muted-foreground:      oklch(0.505 0.018 195);
+  --accent:                oklch(0.945 0.024 188);
+  --accent-foreground:     var(--aqua-700);
+  --destructive:           oklch(0.550 0.170 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border:                oklch(0.912 0.010 192);
+  --input:                 oklch(0.895 0.013 192);
+  --ring:                  var(--aqua-600);
+
+  --link:                  var(--aqua-700);
+  --link-hover:            var(--aqua-800);
+  --status-live:           oklch(0.640 0.108 186);
+  --status-wip:            oklch(0.700 0.130 75);
+  --status-archived:       oklch(0.600 0.012 195);
+}
+
+.dark {
+  --background:            oklch(0.165 0.020 193);
+  --foreground:            oklch(0.925 0.012 190);
+  --card:                  oklch(0.212 0.021 193);
+  --card-foreground:       oklch(0.925 0.012 190);
+  --popover:               oklch(0.228 0.022 193);
+  --popover-foreground:    oklch(0.925 0.012 190);
+  --primary:               var(--aqua-300);
+  --primary-foreground:    oklch(0.215 0.045 187);
+  --secondary:             oklch(0.262 0.028 190);
+  --secondary-foreground:  var(--aqua-100);
+  --muted:                 oklch(0.245 0.022 192);
+  --muted-foreground:      oklch(0.715 0.024 190);
+  --accent:                oklch(0.285 0.040 187);
+  --accent-foreground:     var(--aqua-300);
+  --destructive:           oklch(0.660 0.160 25);
+  --destructive-foreground: oklch(0.16 0.02 25);
+  --border:                oklch(0.278 0.026 191);
+  --input:                 oklch(0.318 0.030 191);
+  --ring:                  var(--aqua-400);
+
+  --link:                  var(--aqua-300);
+  --link-hover:            var(--aqua-200);
+  --status-live:           var(--aqua-400);
+  --status-wip:            oklch(0.780 0.130 78);
+  --status-archived:       oklch(0.620 0.012 195);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-link: var(--link);
+  --color-link-hover: var(--link-hover);
+
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius-base) - 4px);
+  --radius-md: calc(var(--radius-base) - 2px);
+  --radius-lg: var(--radius-base);
+  --radius-xl: calc(var(--radius-base) + 4px);
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.4;
+  --text-label--letter-spacing: 0.01em;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.6;
+  --text-base: 1.0625rem;
+  --text-base--line-height: 1.7;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.4;
+  --text-xl--letter-spacing: -0.005em;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.3;
+  --text-2xl--letter-spacing: -0.01em;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.25;
+  --text-3xl--letter-spacing: -0.015em;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 1.15;
+  --text-4xl--letter-spacing: -0.02em;
+  --text-5xl: clamp(2.5rem, 5.5vw, 3.75rem);
+  --text-5xl--line-height: 1.05;
+  --text-5xl--letter-spacing: -0.025em;
+  --text-6xl: clamp(2.75rem, 7vw, 4.75rem);
+  --text-6xl--line-height: 1;
+  --text-6xl--letter-spacing: -0.03em;
+
+  --spacing-section: 5rem;
+  --spacing-section-lg: 8rem;
+  --container-content: 70rem;
+  --container-prose: 42rem;
+
+  --ease-entrance: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
+  }
+  ::selection {
+    background: var(--aqua-200);
+    color: var(--aqua-950);
+  }
+  .dark ::selection {
+    background: var(--aqua-800);
+    color: var(--aqua-50);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+```
+Doğrulama görevi: Bu değerler başlangıç noktasıdır. Uygulamadan sonra şu çiftleri bir kontrast aracıyla ölç ve 4.5:1 altındaysa `--foreground` / `--muted-foreground` lightness değerini ayarla: `foreground/background`, `muted-foreground/background`, `muted-foreground/card`, `primary-foreground/primary`, `link/background`. Büyük başlıklar için 3:1 yeterlidir.
+4.2 Tipografi
+Seçim: IBM Plex Sans (metin) + IBM Plex Mono (veri). Gerekçe: Türkçe için tam Latin Extended desteği vardır (ğ ı İ ş ç ö ü doğru çizilir, ki birçok trend fontta İ ve ı sorunludur); mühendislik kökenli bir ailedir ve Nihan'ın alanıyla örtüşür; gövde boyutlarında yüksek okunabilirliğe sahiptir; Inter ve Geist gibi her portfolyoda görülen varsayılanlardan değildir. İki ayrı aile yerine tek süper aile kullanılır — hiyerarşi boyut, ağırlık ve renk ile kurulur, ikinci bir font ile değil.
+```ts
+// src/app/[locale]/layout.tsx
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-sans",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
+```
+`latin-ext` alt kümesi zorunludur, çıkarma.
+Rol tablosu:
+Rol	Token	Ağırlık	Not
+Hero başlık	`text-6xl`	600	Sadece ana sayfada, sayfada bir kez
+Sayfa başlığı (h1)	`text-5xl`	600	
+Bölüm başlığı (h2)	`text-3xl`	600	
+Alt başlık (h3)	`text-2xl`	600	
+Kart başlığı (h4)	`text-xl`	500	
+Giriş paragrafı	`text-lg`	400	`text-muted-foreground`
+Gövde	`text-base`	400	Satır yüksekliği 1.7
+İkincil / meta	`text-sm`	400	`text-muted-foreground`
+Veri etiketi	`text-label`	500	mono, sadece gerçek veri için
+Mono kullanım kuralı: Monospace yalnızca gerçekten kod niteliğindeki verilerde kullanılır — teknoloji adları, dosya yolları, komutlar, tarihler, sürüm numaraları, kod blokları. Dekoratif etiket olarak, bölüm üstü "eyebrow" olarak veya rastgele küçük metinlerde kullanılmaz.
+Ölçü: Uzun metin `--container-prose` (672px, yaklaşık 66 karakter) genişliğini geçmez. Kart içi metin 45–55 karakter.
+Yasak tipografik hamleler:
+Başlıkta tek bir kelimeyi renklendirmek veya italik yapmak
+Etiketlerde büyük harf (`uppercase`) + geniş `letter-spacing`
+Her bölümün üstüne gereksiz küçük etiket koymak
+Orta nokta ile birleştirilmiş meta dizeleri (`Frontend · Cloud · Güvenlik`) — bunun yerine ayrı elemanlar veya `<Separator />`
+Buton ve bağlantı metninin sonuna `→` eklemek
+4.3 Boşluk ve düzen
+Temel birim 4px, Tailwind ölçeği aynen kullanılır.
+Konteyner: `max-w-[--container-content]`, yatay dolgu `px-6 md:px-10`.
+Dikey ritim: `py-20 md:py-32` (`--spacing-section` / `--spacing-section-lg`).
+Ana içerik düzeni: 12 sütunlu ızgara, ama bölümler asimetrik bölünür (7/5 veya 8/4). Tam yarı yarıya bölme kullanma, tasarımsız görünür.
+Tüm metin sola hizalı. Ortalama hizalama sadece boş durum ekranlarında.
+Bölüm başlığı ile içerik arası `mt-10`, paragraflar arası `mt-4`.
+4.4 Kenarlık, yarıçap, yükseklik
+Gölge neredeyse hiç kullanılmaz. Kartlar `border` + `bg-card` ile ayrılır. Yükseklik hissi arka plan tonu farkıyla verilir. Tek istisna: dropdown, popover, dialog, tooltip (shadcn varsayılan gölgesi).
+Yarıçap hiyerarşiye göre değişir, her şeye aynı yarıçap verilmez:
+Rozet / etiket: `rounded-sm`
+Buton, input: `rounded-md`
+Kart: `rounded-lg`
+Görsel, kod bloğu: `rounded-xl`
+Kenarlık kalınlığı her yerde 1px. Vurgu gerektiğinde kalınlaştırma yerine `--border` yerine `--input` tonuna geç.
+4.5 Hareket
+İlke: Sayfada tek bir orkestre edilmiş an vardır, gerisi yalnızca kullanıcı eylemine cevap verir.
+Tek orkestre an: Ana sayfa ilk yüklemesinde hero başlığı ve ilerleme çizgisi bir kez belirir. `opacity 0→1` ve `translateY 6px→0`, 60ms gecikmeli iki adım, toplam 400ms, `--ease-entrance`. Sadece ilk yüklemede, kaydırmada tekrar tetiklenmez.
+Kaydırmayla belirme efekti yoktur. Her bölümün aşağıdan kayarak gelmesi, en yaygın yapay zekâ üretimi işaretidir ve okumayı yavaşlatır.
+Etkileşim hareketi: hover 120ms `ease-out`, sadece `background-color`, `border-color`, `color` ve en fazla `translateY(-2px)`. Kart büyütme (`scale`) yok.
+Tema geçişi: `next-themes` `disableTransitionOnChange` ile — tema değişiminde renk animasyonu olmaz, anında geçer. Aksi halde tüm sayfa yanıp söner.
+Akordeon, dialog, dropdown: shadcn varsayılanları, süreler 180ms'e indirilir.
+View Transitions: İsteğe bağlı, yalnızca 180ms çapraz geçiş. Kayan/morphing geçiş yok.
+`prefers-reduced-motion: reduce` altında tüm süreler 0.01ms (Bölüm 4.1'de tanımlı).
+Yasak: parallax, kaydırma ele geçirme (scroll-jacking), imleç takip eden nokta, yazı makinesi efekti, sonsuz kayan teknoloji logoları, arka planda hareketli gradyan veya parçacık, sayaç animasyonu.
+4.6 İkonografi
+Sadece `lucide-react`. Varsayılan boyut 16px (metin içi) veya 20px (buton). `stroke-width: 1.75`. İkon tek başına bir eylemi temsil ediyorsa `aria-label` zorunlu. Teknoloji logoları (React, Docker vb.) kullanılmaz — teknoloji adları metin olarak yazılır.
+4.7 Cesaretin harcanacağı tek yer: İlerleme Çizgisi
+Hero'nun hemen altında yatay, ince bir çizgi. Üzerinde gerçek kilometre taşları işaretli:
+```
+2024 ────●──────── 2025 ────●──────●───── 2026 ────●────────●
+      İlk web            Bankacılık   Agri-Water      HSD       Wikkon
+      projesi            arayüzü      Cloud Run'da    Başkan Y.  backend
+```
+Bu öğe bilgi taşıdığı için vardır: bir öğrencinin en güçlü kanıtı hızıdır. İçerik gerçekten bir dizi olduğu için çizgi ve işaretçi kullanımı meşrudur. İşaretler turkuazdır, çizgi `--border` rengindedir. Masaüstünde yatay, mobilde dikey liste olur. Animasyon yoktur; sadece hover'da o kilometre taşının açıklaması `<Tooltip>` ile görünür.
+Sayfanın geri kalanı sessiz ve disiplinlidir. Başka hiçbir bölüm dikkat çekmeye çalışmaz.
+---
+5. Rota ve sayfa yapısı
+`next-intl` yerelleştirilmiş rotalarla:
+TR	EN	İçerik
+`/`	`/en`	Ana sayfa
+`/hakkimda`	`/en/about`	Hakkımda
+`/projeler`	`/en/projects`	Proje listesi
+`/projeler/[slug]`	`/en/projects/[slug]`	Vaka çalışması
+`/ozgecmis`	`/en/cv`	Özgeçmiş
+`/ozgecmis/yazdir`	`/en/cv/print`	Yazdırma görünümü
+`/notlar`	`/en/notes`	Not listesi
+`/notlar/[slug]`	`/en/notes/[slug]`	Not
+`/iletisim`	`/en/contact`	İletişim
+Sekiz sayfa. Daha fazlası eklenmez. "Hizmetler", "Referanslar", "Blog kategorileri" gibi sayfalar açılmaz — doldurulacak içerik yok.
+5.1 Ana sayfa bölümleri (bu sırayla, fazlası yok)
+Hero — İki satırlık iddia cümlesi (`text-6xl`), altında iki cümlelik açıklama (`text-lg`, `text-muted-foreground`), iki buton: "Projelere bak" (primary), "Özgeçmişi indir" (outline). Fotoğraf hero'da yok.
+İlerleme Çizgisi (Bölüm 4.7)
+Seçili işler — Tam üç proje. Kart değil, geniş satırlar: sol tarafta kapak görseli (4/3 oran), sağda başlık, tek cümlelik sonuç ifadesi, durum rozeti, en fazla 5 teknoloji, canlı ve repo bağlantıları. Numaralandırma yok. Altta "Tüm projeler" bağlantısı.
+Şu an ne yapıyorum — Tek bir kart. Wikkon'un mevcut fazı, o hafta öğrenilen şey, son güncelleme tarihi. Veri `src/data/site.ts` içindeki bir alandan gelir, elle güncellenir. Sahte terminal arayüzü yapılmaz — düz metin, mono ile yalnızca tarih ve faz numarası.
+Kısa hakkımda — Üç paragraf, sonunda "Devamı" bağlantısı. Burada profil fotoğrafı olur.
+İletişim şeridi — Bir başlık, bir cümle, e-posta butonu. Form yok.
+Toplam kaydırma masaüstünde 4 ekran boyunu geçmemeli.
+5.2 Proje listesi (`/projeler`)
+Üstte h1 ve bir cümlelik açıklama. Altında teknoloji etiketlerine göre filtre (shadcn `Badge` + `Toggle` mantığı, URL query param ile, istemci tarafı filtre). Proje kartları iki sütunlu ızgara (mobilde tek). Her kartta: kapak, durum rozeti, başlık, sonuç cümlesi, teknolojiler, yıl.
+Durum rozeti üç değer alır: `Yayında` (yeşil-turkuaz nokta), `Geliştiriliyor` (amber nokta), `Arşiv` (gri nokta). Renk tek başına anlam taşımaz, metin de yazılır.
+5.3 Vaka çalışması (`/projeler/[slug]`)
+Bu sayfanın yapısı sabittir ve her projede aynıdır:
+Breadcrumb
+h1 + tek cümlelik özet (`text-lg`)
+Künye bloğu — iki sütunlu tanım listesi: Rol, Dönem, Durum, Ekip (bireysel/kaç kişi), Teknolojiler, Canlı bağlantı, Repo bağlantısı
+Kapak görseli (betimleyici `alt` metni zorunlu)
+`## Problem` — Ne çözüyor, kim için
+`## Ne yaptım` — Kapsam, hangi parçalar bana ait
+`## Neden böyle kurguladım` — En önemli bölüm. Her önemli teknik kararın gerekçesi. Bu bölüm boş bırakılamaz.
+`## Nerede takıldım` — Karşılaşılan gerçek problem ve çözümü
+`## Sonuç` — Ölçülebilir veya doğrulanabilir ifade. Ekran görüntüleri veya kısa GIF
+`## Şimdi olsa neyi değiştirirdim` — Kendi işini eleştirme bölümü
+Önceki / sonraki proje gezinmesi
+Paylaşım butonları yok. Yorum yok.
+Wikkon özel: Sayfada ek olarak faz tablosu bulunur (Faz 0–7, hangisi tamamlandı, hangisinde olunduğu). Yarım proje şeffaf gösterilir, gizlenmez.
+HSD Selçuk: Bu da bir vaka çalışması olarak yazılır. "Problem" bölümü topluluğun devraldığı durum, "Sonuç" bölümü sayısal (kaç etkinlik, kaç katılımcı, kaç yeni üye).
+5.4 Özgeçmiş (`/ozgecmis`)
+Web'de tam okunabilir CV. Üstte sabit bir çubukta "PDF indir" butonu. Bölümler: Özet, Eğitim, Projeler (kısa, vaka sayfalarına bağlantılı), Topluluk ve liderlik, Sertifikalar, Teknik beceriler, Diller.
+Teknik beceriler bölümü kritik: Yüzde çubuğu, yıldız, seviye grafiği yasak. Her beceri üç kategoriden birine düşer ve kullanıldığı projeye bağlanır:
+Üretimde kullanıyorum: Next.js, React, TypeScript, Git → ilgili projeye link
+Projede uyguluyorum: C#, ASP.NET Core, .NET 8, Node.js → Wikkon'a link
+Temel düzeyde biliyorum: Python, C, Google Cloud Run
+Bu ayrım dürüsttür ve dürüstlük bu seviyede avantajdır.
+5.5 Notlar (`/notlar`)
+Kısa teknik yazılar. Liste: tarih, başlık, tek cümlelik özet, okuma süresi, etiketler. Ayda bir yazı hedefi. İlk üç yazı önerisi:
+C# öğrenirken frontend alışkanlıklarımın ters teptiği üç yer
+Agri-Water'ı Cloud Run'a çıkarırken bozulan şeyler
+Wikkon'da neden ayrı bir API katmanı kurdum
+5.6 Hakkımda (`/hakkimda`)
+Hikâye anlatımı. Nasıl başladı, şu an nereye gidiyor, nasıl çalışıyor ("üretilen kodu anlamadan kabul etmeme" prensibi burada anlatılır). Eğitim, topluluk rolü, sertifikalar, ilgi alanları. Profil fotoğrafı burada büyük.
+5.7 İletişim (`/iletisim`)
+E-posta (obfuscated), LinkedIn, GitHub. En fazla üç bağlantı. Form isteğe bağlı; yapılırsa server action + zod + honeypot + Resend. Yapılmazsa `mailto:` yeterlidir ve bu bir eksiklik değildir.
+---
+6. İçerik modeli
+`src/lib/schemas.ts`:
+```ts
+import { z } from "zod";
+
+export const projectFrontmatter = z.object({
+  title: z.string(),
+  slug: z.string(),
+  summary: z.string().max(160),
+  outcome: z.string().max(200),          // doğrulanabilir sonuç cümlesi
+  role: z.string(),
+  period: z.string(),                    // "Mart 2026 – devam ediyor"
+  year: z.number(),
+  status: z.enum(["live", "wip", "archived"]),
+  team: z.string(),                      // "Bireysel" | "3 kişilik ekip"
+  stack: z.array(z.string()).min(1).max(8),
+  cover: z.string(),
+  coverAlt: z.string().min(20),          // betimleyici olmak zorunda
+  links: z.object({
+    live: z.string().url().optional(),
+    repo: z.string().url().optional(),
+  }),
+  featured: z.boolean().default(false),
+  order: z.number().default(99),
+});
+
+export const noteFrontmatter = z.object({
+  title: z.string(),
+  slug: z.string(),
+  summary: z.string().max(160),
+  date: z.string(),
+  tags: z.array(z.string()).max(4),
+  draft: z.boolean().default(false),
+});
+```
+Doğrulama build sırasında yapılır; şemaya uymayan bir MDX dosyası build'i kırar. Sessizce geçilmez.
+`src/data/cv.ts` tipli tek kaynak olarak yazılır. `/ozgecmis` sayfası, PDF ve JSON-LD `Person` yapısı hepsi bu dosyadan beslenir. CV'nin başka hiçbir kopyası projede bulunmaz.
+---
+7. shadcn bileşen listesi
+Kurulacaklar, fazlası değil:
+```
+button card badge separator tabs accordion dialog sheet
+dropdown-menu tooltip breadcrumb avatar skeleton sonner
+scroll-area toggle-group
+```
+Kural: `src/components/ui/` altındaki dosyalar tasarım token'larıyla uyumlu hale getirilmek dışında değiştirilmez. Yeni varyant gerekiyorsa `cva` içindeki `variants` nesnesine eklenir, sarmalayıcı bileşen yazılmaz.
+`Button` varyantları: `default` (turkuaz dolgu), `outline`, `ghost`, `link`. `destructive` sitede kullanılmaz ama kalabilir.
+---
+8. CV → PDF hattı
+`/ozgecmis/yazdir` rotası: header, footer, navigasyon yok. Yalnızca CV içeriği, yazdırma için optimize CSS (A4, 18mm kenar boşluğu, `@page` kuralı, `color-adjust: exact`).
+`scripts/build-cv-pdf.ts`: Playwright ile bu rotayı açar, `page.pdf()` ile `public/nihan-arman-cv.pdf` üretir. Açık tema zorlanır.
+`package.json`: `"cv:pdf": "tsx scripts/build-cv-pdf.ts"`. `postbuild` içinde çağrılabilir veya elle çalıştırılır.
+`/ozgecmis` sayfasındaki indir butonu bu statik dosyayı gösterir.
+Sonuç: CV bilgisi tek yerde değişir, hem site hem PDF güncellenir. `.docx` dosyası artık ana kaynak değildir.
+---
+9. i18n
+`next-intl`, `localePrefix: "as-needed"` (TR öneksiz, EN `/en` önekli)
+Yerelleştirilmiş yollar `routing.ts` içinde `pathnames` ile tanımlanır
+MDX içerik dosyaları dil klasörlerine ayrılır; bir dilde eksik içerik varsa o dil için o sayfa listelenmez, 404 verilmez, diğer dile yönlendirme mesajı gösterilir
+`<html lang>` doğru ayarlanır, `hreflang` alternatifleri metadata'ya eklenir
+Dil değiştirici aynı sayfanın karşılığına gider, ana sayfaya değil
+---
+10. SEO ve metadata
+Her rotada `generateMetadata`: title, description, canonical, OG, Twitter card, `alternates.languages`
+Başlık şablonu: `%s | Nihan Arman`
+`app/opengraph-image.tsx` ve proje/not başına dinamik OG görseli (`ImageResponse`, 1200×630). Tasarım: koyu turkuaz-siyah zemin, sol alt köşede isim, ortada başlık, sağ üstte ince turkuaz aksan çizgisi. Aynı tipografi.
+JSON-LD: ana sayfada `Person` (`cv.ts`'den türetilir), vaka sayfalarında `CreativeWork`, notlarda `BlogPosting`, iç sayfalarda `BreadcrumbList`
+`sitemap.ts` ve `robots.ts` üretilir, tüm dil varyantları dahil
+`theme-color` meta etiketi her iki tema için ayrı ayrı tanımlanır
+---
+11. Erişilebilirlik gereksinimleri
+Bunlar isteğe bağlı değildir, kabul kriteridir:
+İlk odaklanabilir öğe "İçeriğe geç" bağlantısı, `#main`'e gider
+Her sayfada tek `<h1>`, başlık seviyeleri atlanmaz
+`<header>`, `<nav>`, `<main>`, `<footer>` landmark'ları
+Tüm etkileşimli öğeler klavye ile erişilebilir ve `:focus-visible` halkası görünür (2px, `--ring`, 2px offset)
+İkon-only butonlarda `aria-label`
+Yeni sekmede açılan bağlantılarda `rel="noopener noreferrer"` ve görsel olarak gizli "(yeni sekmede açılır)" metni
+Tüm görsellerde anlamlı `alt`; dekoratifse `alt=""`
+Renk tek başına anlam taşımaz (durum rozetlerinde metin de var)
+Metin kontrastı AA (4.5:1), büyük metin 3:1
+Mobil menü `Sheet` ile, odak tuzağı ve Esc ile kapanma çalışır
+Tema anahtarının durumu `aria-label` içinde bildirilir
+---
+12. Performans bütçesi
+LCP < 1.8s (4G), CLS < 0.05, INP < 200ms
+İlk yüklemede istemci JS < 100KB (gzip)
+Fontlar `next/font` ile kendi kendine barındırılır, `display: swap`, hero fontu preload
+Tüm görseller `next/image`, açık `sizes`, kapaklar için `priority` sadece hero görselinde
+Proje kapakları WebP, en fazla 1600px genişlik
+`"use client"` yalnızca şu bileşenlerde: `ThemeToggle`, `MobileNav`, `LocaleSwitcher`, `ProjectFilter`, `Accordion` sarmalayıcıları. Başka hiçbir yerde.
+Lighthouse: Performance ≥ 95, Accessibility 100, Best Practices ≥ 95, SEO 100
+---
+13. Kabul kriterleri
+Bir bölüm şu sorulara "evet" cevabı verilmeden bitmiş sayılmaz:
+[ ] Açık ve koyu temada ayrı ayrı kontrol edildi mi?
+[ ] 360px genişlikte bozulmuyor mu?
+[ ] Sadece klavye ile gezilebiliyor mu, odak her adımda görünür mü?
+[ ] `prefers-reduced-motion` açıkken hareket duruyor mu?
+[ ] Ham hex, ham px font boyutu veya arbitrary Tailwind değeri kaldı mı? (Kalmamalı)
+[ ] Türkçe karakterler (ğ İ ı ş ç ö ü) her fontta doğru çiziliyor mu?
+[ ] Turkuaz ekranın %8'inden fazlasını kaplıyor mu? (Kaplamamalı)
+[ ] `npm run build` ve `tsc --noEmit` hatasız mı?
+---
+14. Uygulama sırası
+Her adım ayrı bir istek olarak verilir. Adım tamamlanıp doğrulanmadan bir sonrakine geçilmez.
+```bash
+# Adım 0 — kurulum
+npx create-next-app@latest nihanarman --typescript --tailwind --eslint --app --src-dir --import-alias "@/*"
+cd nihanarman
+npx shadcn@latest init
+npx shadcn@latest add button card badge separator tabs accordion dialog sheet dropdown-menu tooltip breadcrumb avatar skeleton sonner scroll-area toggle-group
+npm i next-themes lucide-react next-intl gray-matter next-mdx-remote reading-time zod
+npm i -D remark-gfm rehype-slug rehype-autolink-headings rehype-pretty-code shiki prettier prettier-plugin-tailwindcss tsx playwright
+```
+Tasarım sistemi — Bölüm 4.1'deki `globals.css`, Bölüm 4.2'deki font kurulumu. Sonra geçici bir `/tasarim` sayfası: tüm tipografi ölçeği, tüm buton varyantları, renk swatch'ları, durum rozetleri. Her iki temada kontrol et. Bu sayfa doğru görünmeden başka hiçbir şey yazılmaz. Site bitince silinir.
+İskelet — `SkipLink`, `SiteHeader` (masaüstü nav + `Sheet` mobil), `ThemeToggle` (next-themes, FOUC engelli), `SiteFooter`, `[locale]/layout.tsx`.
+i18n — `next-intl` kurulumu, yerelleştirilmiş rotalar, `LocaleSwitcher`, mesaj dosyaları.
+İçerik hattı — `lib/content.ts`, zod şemaları, MDX render bileşenleri, `rehype-pretty-code` teması (açık/koyu ayrı).
+Proje sayfaları — liste, filtre, vaka çalışması şablonu. İçerik olarak önce Agri-Water (tamamlanmış, en kolay).
+Ana sayfa — Hero, İlerleme Çizgisi, Seçili işler, Şu an, Kısa hakkımda, İletişim şeridi.
+CV — `data/cv.ts`, `/ozgecmis`, `/ozgecmis/yazdir`, PDF script'i.
+Notlar — liste ve detay.
+Hakkımda ve İletişim.
+SEO ve OG — metadata, dinamik OG görselleri, JSON-LD, sitemap, robots.
+Denetim — Lighthouse, klavye turu, kontrast ölçümü, 360px kontrolü, `/tasarim` sayfasının silinmesi.
+Yayın — Vercel, alan adı, analytics.
+---
+15. Kodlama kuralları (asistana talimat)
+Varsayılan olarak Server Component yaz. `"use client"` eklemek için Bölüm 12'deki listede yer alması gerekir; başka bir yerde gerekiyorsa önce nedenini söyle.
+Ham renk değeri yazma. Sadece Bölüm 4.1'deki token'lar.
+Arbitrary Tailwind değeri (`text-[17px]`, `p-[13px]`, `bg-[#0FB3A2]`) yazma. Ölçek dışında bir değere ihtiyaç varsa ölçeği genişlet.
+Bir bileşen 150 satırı geçiyorsa böl.
+`any` kullanma. `strict: true` açık kalır.
+Kullanıcıya görünen her metin i18n mesaj dosyasından gelir, JSX içine sabit metin gömme.
+Yeni bir kütüphane ekleme. Bölüm 2'de olmayan bir paket gerekiyorsa önce sor.
+Placeholder içerik ("Lorem ipsum", "Project One", "example@example.com") üretme. Bölüm 1'deki gerçek envanteri kullan, eksik bilgi varsa `TODO(nihan):` yorumu bırak.
+Her adımın sonunda Bölüm 13'teki kontrol listesini kendi kendine uygula ve sonucu bildir.
+Bir tasarım kararını değiştirmek istiyorsan uygulama, önce gerekçesiyle birlikte öner.
