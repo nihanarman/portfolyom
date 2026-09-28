@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "projects": "Projeler",
+    "about": "Hakkımda",
+    "cv": "Özgeçmiş",
+    "contact": "İletişim"
+  },
+  "footer": {
+    "copyright": "TODO(nihan): Footer metni"
+  },
+  "common": {
+    "skipToContent": "İçeriğe geç",
+    "openInNewTab": "(yeni sekmede açılır)",
+    "toggleTheme": "Temayı değiştir",
+    "switchLanguage": "Dil değiştir"
+  },
+  "pageTitles": {
+    "home": "Ana sayfa",
+    "about": "Hakkımda",
+    "projects": "Projeler",
+    "cv": "Özgeçmiş",
+    "contact": "İletişim",
+    "notes": "Notlar"
+  },
+  "home": {
+    "heroTitle": "TODO(nihan): Kısa hero başlığı",
+    "heroDescription": "TODO(nihan): Kısa açıklama metni",
+    "primaryCta": "Projelere bak",
+    "secondaryCta": "Özgeçmişi gör"
+  },
+  "about": {
+    "title": "Hakkımda"
+  },
+  "projects": {
+    "title": "Projeler"
+  },
+  "cv": {
+    "title": "Özgeçmiş"
+  },
+  "contact": {
+    "title": "İletişim"
+  },
+  "notes": {
+    "title": "Notlar"
+  }
+}

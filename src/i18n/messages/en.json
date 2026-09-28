@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "projects": "Projects",
+    "about": "About",
+    "cv": "CV",
+    "contact": "Contact"
+  },
+  "footer": {
+    "copyright": "TODO(nihan): Footer copy"
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "openInNewTab": "(opens in a new tab)",
+    "toggleTheme": "Toggle theme",
+    "switchLanguage": "Switch language"
+  },
+  "pageTitles": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "cv": "CV",
+    "contact": "Contact",
+    "notes": "Notes"
+  },
+  "home": {
+    "heroTitle": "TODO(nihan): Short hero title",
+    "heroDescription": "TODO(nihan): Short description copy",
+    "primaryCta": "View projects",
+    "secondaryCta": "View CV"
+  },
+  "about": {
+    "title": "About"
+  },
+  "projects": {
+    "title": "Projects"
+  },
+  "cv": {
+    "title": "CV"
+  },
+  "contact": {
+    "title": "Contact"
+  },
+  "notes": {
+    "title": "Notes"
+  }
+}
