@@ -95,6 +95,9 @@
   --color-ring: var(--ring);
   --color-link: var(--link);
   --color-link-hover: var(--link-hover);
+  --color-status-live: var(--status-live);
+  --color-status-wip: var(--status-wip);
+  --color-status-archived: var(--status-archived);
 
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
