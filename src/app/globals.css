@@ -34,8 +34,8 @@
   --accent-foreground:     var(--aqua-700);
   --destructive:           oklch(0.550 0.170 25);
   --destructive-foreground: oklch(0.99 0 0);
-  --border:                oklch(0.912 0.010 192);
-  --input:                 oklch(0.895 0.013 192);
+  --border:                oklch(0.880 0.014 192);
+  --input:                 oklch(0.840 0.018 192);
   --ring:                  var(--aqua-600);
 
   --link:                  var(--aqua-700);
@@ -46,29 +46,29 @@
 }
 
 .dark {
-  --background:            oklch(0.165 0.020 193);
-  --foreground:            oklch(0.925 0.012 190);
-  --card:                  oklch(0.212 0.021 193);
-  --card-foreground:       oklch(0.925 0.012 190);
-  --popover:               oklch(0.228 0.022 193);
-  --popover-foreground:    oklch(0.925 0.012 190);
-  --primary:               var(--aqua-300);
-  --primary-foreground:    oklch(0.215 0.045 187);
-  --secondary:             oklch(0.262 0.028 190);
-  --secondary-foreground:  var(--aqua-100);
-  --muted:                 oklch(0.245 0.022 192);
-  --muted-foreground:      oklch(0.715 0.024 190);
-  --accent:                oklch(0.285 0.040 187);
-  --accent-foreground:     var(--aqua-300);
+  --background:            oklch(0.185 0.014 195);
+  --foreground:            oklch(0.935 0.008 195);
+  --card:                  oklch(0.225 0.016 195);
+  --card-foreground:       oklch(0.935 0.008 195);
+  --popover:               oklch(0.250 0.017 195);
+  --popover-foreground:    oklch(0.935 0.008 195);
+  --primary:               oklch(0.790 0.105 190);
+  --primary-foreground:    oklch(0.200 0.035 190);
+  --secondary:             oklch(0.265 0.018 195);
+  --secondary-foreground:  oklch(0.935 0.008 195);
+  --muted:                 oklch(0.245 0.016 195);
+  --muted-foreground:      oklch(0.735 0.016 195);
+  --accent:                oklch(0.290 0.030 190);
+  --accent-foreground:     oklch(0.860 0.095 190);
   --destructive:           oklch(0.660 0.160 25);
   --destructive-foreground: oklch(0.16 0.02 25);
-  --border:                oklch(0.278 0.026 191);
-  --input:                 oklch(0.318 0.030 191);
-  --ring:                  var(--aqua-400);
+  --border:                oklch(0.330 0.020 195);
+  --input:                 oklch(0.370 0.022 195);
+  --ring:                  oklch(0.720 0.110 190);
 
-  --link:                  var(--aqua-300);
-  --link-hover:            var(--aqua-200);
-  --status-live:           var(--aqua-400);
+  --link:                  oklch(0.790 0.105 190);
+  --link-hover:            oklch(0.860 0.095 190);
+  --status-live:           oklch(0.720 0.110 190);
   --status-wip:            oklch(0.780 0.130 78);
   --status-archived:       oklch(0.620 0.012 195);
 }
