@@ -32,7 +32,10 @@
     "title": "About"
   },
   "projects": {
-    "title": "Projects"
+    "title": "Projects",
+    "description": "Short, outcome-focused project work with clear structure and measurable results.",
+    "all": "All",
+    "empty": "No projects match this technology filter."
   },
   "cv": {
     "title": "CV"
