@@ -3,8 +3,13 @@ import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
-import "../globals.css";
+
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SkipLink } from "@/components/layout/skip-link";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { routing } from "@/i18n/routing";
+import "../globals.css";
 
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin", "latin-ext"],
@@ -81,7 +86,14 @@ export default async function LocaleLayout({
     >
       <body className="min-h-full bg-background text-foreground">
         <NextIntlClientProvider messages={messages} locale={locale}>
-          {children}
+          <ThemeProvider>
+            <SkipLink />
+            <SiteHeader />
+            <main id="main" className="mx-auto w-full max-w-content px-6 md:px-10">
+              {children}
+            </main>
+            <SiteFooter />
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
