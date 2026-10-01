@@ -80,7 +80,7 @@ export const cv = {
       summaryEn:
         "A 5-day intensive sprint designing user-centric, high-interaction interfaces in Figma and turning them into optimized Next.js frontend applications.",
       stack: ["Figma", "Next.js", "Cursor"],
-      linkedProjectSlug: "wikkon-sprint",
+      linkedProjectSlug: "wikkon",
     },
     {
       title: "Fintech Web Portal 2.0",

@@ -32,7 +32,10 @@
     "title": "Hakkımda"
   },
   "projects": {
-    "title": "Projeler"
+    "title": "Projeler",
+    "description": "Kısa hedef, net yapı ve gerçek kullanım çıktıları odaklı çalışma örnekleri.",
+    "all": "Tümü",
+    "empty": "Bu teknoloji için proje bulunamadı."
   },
   "cv": {
     "title": "Özgeçmiş"
