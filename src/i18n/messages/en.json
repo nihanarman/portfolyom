@@ -23,13 +23,16 @@
     "notes": "Notes"
   },
   "home": {
-    "heroTitle": "TODO(nihan): Short hero title",
-    "heroDescription": "TODO(nihan): Short description copy",
-    "primaryCta": "View projects",
-    "secondaryCta": "View CV"
+  "hero": {
+    "titleLine1": "A disciplined front-end developer",
+    "titleLine2": "who understands what lies beneath.",
+    "description": "I am a 2nd-year Computer Engineering student at Selçuk University and the HSD Selçuk Campus Ambassador. I build modern web interfaces with a strong engineering foundation and a keen awareness of cybersecurity."
   },
   "about": {
-    "title": "About"
+    "p1": "I am currently pursuing my degree in Computer Engineering at Selçuk University. I constantly bridge the gap between theoretical computer science—from algorithm complexity analysis in C to OOP in Java—and practical applications using modern front-end technologies.",
+    "p2": "I serve as the President and Campus Ambassador for HSD Selçuk (Huawei Student Developers) for the 2026-2027 academic year. Additionally, I oversee software development at the Divizyon platform, focusing on user-centric and high-performance web architecture.",
+    "p3": "While my primary technical focus is on Next.js and the React ecosystem, I have a deep-rooted interest in cybersecurity principles. For me, engineering isn't just about writing code; it's about knowing exactly what you are building, why you are building it, and how to keep it secure."
+  }
   },
   "projects": {
     "title": "Projects",

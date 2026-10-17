@@ -146,6 +146,17 @@
   --ease-exit: cubic-bezier(0.4, 0, 1, 1);
 }
 
+@keyframes homeReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -162,6 +173,11 @@
   :focus-visible {
     @apply outline-ring outline-2 outline-offset-2;
   }
+  .home-reveal {
+    opacity: 0;
+    transform: translateY(6px);
+    animation: homeReveal 400ms var(--ease-entrance) 60ms forwards;
+  }
   ::selection {
     background: var(--aqua-200);
     color: var(--aqua-950);
@@ -172,6 +188,11 @@
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .home-reveal {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
