@@ -1,11 +1,11 @@
-import { getTranslations } from "next-intl/server";
+import { CvDocument } from "@/components/cv/cv-document";
 
-export default async function CvPage() {
-  const t = await getTranslations("cv");
+export default async function CvPage({
+  params,
+}: {
+  params: Promise<{ locale?: string }>;
+}) {
+  const { locale = "tr" } = await params;
 
-  return (
-    <main id="main" className="mx-auto w-full max-w-content px-6 py-20 md:px-10 md:py-32">
-      <h1 className="text-5xl font-semibold">{t("title")}</h1>
-    </main>
-  );
+  return <CvDocument locale={locale === "en" ? "en" : "tr"} />;
 }
