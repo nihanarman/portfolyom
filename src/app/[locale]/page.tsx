@@ -1,14 +1,26 @@
-import { getTranslations } from "next-intl/server";
+import { ContactStrip } from "@/components/home/contact-strip";
+import { CurrentBuild } from "@/components/home/current-build";
+import { Hero } from "@/components/home/hero";
+import { SelectedWork } from "@/components/home/selected-work";
+import { ShortAbout } from "@/components/home/short-about";
+import { TrajectoryLine } from "@/components/home/trajectory-line";
 
-export default async function HomePage() {
-  const t = await getTranslations("home");
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  const safeLocale = locale === "en" ? "en" : "tr";
 
   return (
     <div className="py-20 md:py-32">
-      <h1 className="text-5xl font-semibold">{t("heroTitle")}</h1>
-      <p className="mt-4 max-w-prose text-lg text-muted-foreground">
-        {t("heroDescription")}
-      </p>
+      <Hero />
+      <TrajectoryLine locale={safeLocale} />
+      <SelectedWork locale={safeLocale} />
+      <CurrentBuild />
+      <ShortAbout />
+      <ContactStrip />
     </div>
   );
 }

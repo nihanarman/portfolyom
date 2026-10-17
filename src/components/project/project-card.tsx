@@ -19,14 +19,20 @@ type ProjectCardProps = {
 export function ProjectCard({ project, locale }: ProjectCardProps) {
   return (
     <article className="group overflow-hidden rounded-lg border border-border bg-card transition-transform duration-150 hover:-translate-y-1 hover:border-primary/70">
-      <Link href={`/projects/${project.slug}` as any} className="block">
+      <Link
+        href={{
+          pathname: "/projects/[slug]",
+          params: { slug: project.slug },
+        }}
+        className="block"
+      >
         <div className="overflow-hidden border-b border-border bg-secondary">
           <img src={project.cover} alt={project.coverAlt} className="h-48 w-full object-cover" />
         </div>
 
         <div className="p-5">
           <div className="mb-3">
-            <StatusBadge status={project.status} />
+            <StatusBadge status={project.status} locale={locale} />
           </div>
 
           <h2 className="text-xl font-medium text-foreground">{project.title}</h2>
@@ -36,7 +42,7 @@ export function ProjectCard({ project, locale }: ProjectCardProps) {
             {project.stack.slice(0, 5).map((tech) => (
               <span
                 key={`${project.slug}-${tech}`}
-                className="rounded border border-border bg-secondary px-2 py-1 text-[11px] font-medium text-foreground"
+                className="rounded border border-border bg-secondary px-2 py-1 text-xs font-medium text-foreground"
               >
                 {tech}
               </span>

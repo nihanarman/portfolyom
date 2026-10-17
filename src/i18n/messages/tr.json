@@ -23,13 +23,16 @@
     "notes": "Notlar"
   },
   "home": {
-    "heroTitle": "TODO(nihan): Kısa hero başlığı",
-    "heroDescription": "TODO(nihan): Kısa açıklama metni",
-    "primaryCta": "Projelere bak",
-    "secondaryCta": "Özgeçmişi gör"
+  "hero": {
+    "titleLine1": "Görünenden fazlasını anlayan,",
+    "titleLine2": "disiplinli bir front-end geliştirici.",
+    "description": "Selçuk Üniversitesi Bilgisayar Mühendisliği 2. sınıf öğrencisi ve HSD Selçuk Kampüs Elçisiyim. Modern web arayüzlerini, siber güvenlik bilinci ve sağlam mühendislik temelleriyle inşa ediyorum."
   },
   "about": {
-    "title": "Hakkımda"
+    "p1": "Selçuk Üniversitesi Bilgisayar Mühendisliği bölümünde eğitimime devam ediyorum. C ile algoritma karmaşıklığı analizlerinden Java ile nesne yönelimli programlamaya kadar aldığım teorik eğitimi, modern front-end teknolojileriyle pratiğe döküyorum.",
+    "p2": "2026-2027 dönemi için HSD Selçuk (Huawei Student Developers) Başkanı ve Kampüs Elçisi olarak görev yapıyorum. Aynı zamanda Divizyon platformunda yazılım geliştirme süreçlerine liderlik ederek, kullanıcı odaklı ve yüksek performanslı arayüzler üretiyorum.",
+    "p3": "Öncelikli teknik odağım Next.js ve modern web ekosistemi olsa da siber güvenlik prensiplerine derin bir ilgi duyuyorum. Benim için mühendislik sadece kod yazmak değil; neyi, neden ve nasıl güvenli bir şekilde inşa ettiğini bilmektir."
+  }
   },
   "projects": {
     "title": "Projeler",
